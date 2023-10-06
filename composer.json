@@ -1,0 +1,39 @@
+{
+    "name": "sakanjo/laravel-easy-metrics",
+    "description": "Generate metrics with ease and precision.",
+    "keywords": [
+        "laravel",
+        "metrics",
+        "charts",
+        "reports"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Salah Kanjo",
+            "email": "dev.salah.kanjo@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^10.26"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "SaKanjo\\EasyMetrics\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SaKanjo\\EasyMetrics\\EasyMetricsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
