@@ -4,6 +4,8 @@ namespace SaKanjo\EasyMetrics\Metrics;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use SaKanjo\EasyMetrics\Enums\Range;
@@ -37,7 +39,7 @@ abstract class Metric
 
     public static function make(string|Builder $query): static
     {
-        return app(static::class, [
+        return App::make(static::class, [
             'query' => $query,
         ]);
     }
@@ -110,8 +112,8 @@ abstract class Metric
         }
 
         return [
-            now()->subDays($range),
-            now(),
+            Date::now()->subDays($range),
+            Date::now(),
         ];
     }
 

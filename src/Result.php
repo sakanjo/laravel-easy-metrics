@@ -5,6 +5,7 @@ namespace SaKanjo\EasyMetrics;
 use ArrayAccess;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 
 class Result implements ArrayAccess, Responsable
 {
@@ -19,7 +20,7 @@ class Result implements ArrayAccess, Responsable
 
     public static function make(array $data, array $labels): static
     {
-        return app(static::class, [
+        return App::make(static::class, [
             'data' => $data,
             'labels' => $labels,
         ]);

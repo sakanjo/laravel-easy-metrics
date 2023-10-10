@@ -5,6 +5,7 @@ namespace SaKanjo\EasyMetrics\Metrics;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Date;
 use SaKanjo\EasyMetrics\Concerns\OnlyIntegers;
 use SaKanjo\EasyMetrics\Result;
 
@@ -242,7 +243,7 @@ class Trend extends Metric
     {
         $dateColumn = $this->getDateColumn();
         $startingDate = $this->getStartingDate();
-        $endingDate = now();
+        $endingDate = Date::now();
 
         $expression = $this->getExpression();
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
