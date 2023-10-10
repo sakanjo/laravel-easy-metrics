@@ -11,7 +11,7 @@
 
 > ✨ Help support the maintenance of this package by [sponsoring me](https://github.com/sponsors/sakanjo).
 
-> Designed to work out-of-the-box with **Laravel**, **Symfony**, **Filament**, and more.
+> Designed to work with **Laravel**, **Filament**, and more.
 
 ## 🚀 Supported metrics
 
@@ -155,7 +155,6 @@ Doughnut::make(User::class)
 ```php
 use SaKanjo\EasyMetrics\Metrics\Trend;
 use App\Models\User;
-use App\Enums\Gender;
 
 [$labels, $data] = Trend::make(User::class)
     ->countByMonths();
