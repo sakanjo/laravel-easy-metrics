@@ -5,6 +5,7 @@ namespace SaKanjo\EasyMetrics\Metrics;
 use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use SaKanjo\EasyMetrics\Result;
 
@@ -14,8 +15,16 @@ class Doughnut extends Metric
 
     protected ?array $options = null;
 
-    public function options(array $options): static
+    public function options(array|string $options): static
     {
+        if (is_string($options)) {
+            if (! enum_exists($options)) {
+                throw new \Exception("Enum $options does not exist");
+            }
+
+            $options = Arr::pluck($options::cases(), 'value');
+        }
+
         $this->options = $options;
 
         return $this;

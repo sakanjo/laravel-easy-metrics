@@ -105,7 +105,7 @@ use App\Models\User;
 use App\Enums\Gender;
 
 [$labels, $data] = Doughnut::make(User::class)
-    ->options(Gender::values())
+    ->options(Gender::class)
     ->count('gender');
 ```
 
