@@ -13,6 +13,8 @@
 
 > Designed to work with **Laravel**, **Filament**, and more.
 
+![Preview](./art/preview.png)
+
 ## 🚀 Supported metrics
 
 - **Bar** metric
