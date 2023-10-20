@@ -299,10 +299,9 @@ class UsersCountChart extends ChartWidget
     protected function getFilters(): ?array
     {
         return [
-            15 => '15 Days',
-            30 => '30 Days',
-            60 => '60 Days',
-            365 => '365 Days',
+            15 => '15 Months',
+            30 => '30 Months',
+            60 => '60 Months',
         ];
     }
 }
