@@ -184,53 +184,53 @@ class Trend extends Metric
     protected function getExpression(): string
     {
         $grammar = $this->query->getQuery()->getGrammar();
+        $driver = $this->query->getConnection()->getDriverName(); // @phpstan-ignore-line
         $dateColumn = $grammar->wrap($this->getDateColumn());
 
         if (! in_array($this->unit, ['year', 'month', 'week', 'day', 'hour', 'minute'], true)) {
             throw new \InvalidArgumentException("Invalid unit: {$this->unit}");
         }
 
-        switch ($this->query->getConnection()->getDriverName()) {
-            case 'sqlite':
-                return match ($this->unit) {
-                    'year' => "strftime('%Y', $dateColumn)",
-                    'month' => "strftime('%Y-%m', $dateColumn)",
-                    'week' => "strftime('%x-%v', $dateColumn)",
-                    'day' => "strftime('%Y-%m-%d', $dateColumn)",
-                    'hour' => "strftime('%Y-%m-%d %H:00', $dateColumn)",
-                    'minute' => "strftime('%Y-%m-%d %H:%i:00', $dateColumn)",
-                };
-            case 'mariadb':
-            case 'mysql':
-                return match ($this->unit) {
-                    'year' => "date_format($dateColumn, '%Y')",
-                    'month' => "date_format($dateColumn, '%Y-%m')",
-                    'week' => "date_format($dateColumn, '%x-%v')",
-                    'day' => "date_format($dateColumn, '%Y-%m-%d')",
-                    'hour' => "date_format($dateColumn, '%Y-%m-%d %H:00')",
-                    'minute' => "date_format($dateColumn, '%Y-%m-%d %H:%i:00')",
-                };
-            case 'pgsql':
-                return match ($this->unit) {
-                    'year' => "to_char($dateColumn, 'YYYY')",
-                    'month' => "to_char($dateColumn, 'YYYY-MM')",
-                    'week' => "to_char($dateColumn, 'IYYY-IW')",
-                    'day' => "to_char($dateColumn, 'YYYY-MM-DD')",
-                    'hour' => "to_char($dateColumn, 'YYYY-MM-DD HH24:00')",
-                    'minute' => "to_char($dateColumn, 'YYYY-MM-DD HH24:mi:00')",
-                };
-            case 'sqlsrv':
-                return match ($this->unit) {
-                    'year' => "DATEPART(year, $dateColumn)",
-                    'month' => "DATEPART(month, $dateColumn)",
-                    'week' => "DATEPART(week, $dateColumn)",
-                    'day' => "DATEPART(day, $dateColumn)",
-                    'hour' => "DATEPART(hour, $dateColumn)",
-                    'minute' => "DATEPART(minute, $dateColumn)",
-                };
-            default:
-                throw new \InvalidArgumentException('Laravel Easy Metrics is not supported for this database.');
+        if (static::hasMacro($driver)) {
+            return static::$driver($dateColumn, $this->unit);
         }
+
+        return match ($driver) {
+            'sqlite' => match ($this->unit) {
+                'year' => "strftime('%Y', $dateColumn)",
+                'month' => "strftime('%Y-%m', $dateColumn)",
+                'week' => "strftime('%Y-', $dateColumn) ||
+                        ( strftime('%W', $dateColumn) + (1 - strftime('%W', strftime('%Y', $dateColumn) || '-01-04')) )",
+                'day' => "strftime('%Y-%m-%d', $dateColumn)",
+                'hour' => "strftime('%Y-%m-%d %H:00', $dateColumn)",
+                'minute' => "strftime('%Y-%m-%d %H:%M:00', $dateColumn)",
+            },
+            'mysql' => match ($this->unit) {
+                'year' => "date_format($dateColumn, '%Y')",
+                'month' => "date_format($dateColumn, '%Y-%m')",
+                'week' => "date_format($dateColumn, '%x-%v')",
+                'day' => "date_format($dateColumn, '%Y-%m-%d')",
+                'hour' => "date_format($dateColumn, '%Y-%m-%d %H:00')",
+                'minute' => "date_format($dateColumn, '%Y-%m-%d %H:%i:00')",
+            },
+            'pgsql' => match ($this->unit) {
+                'year' => "to_char($dateColumn, 'YYYY')",
+                'month' => "to_char($dateColumn, 'YYYY-MM')",
+                'week' => "to_char($dateColumn, 'IYYY-IW')",
+                'day' => "to_char($dateColumn, 'YYYY-MM-DD')",
+                'hour' => "to_char($dateColumn, 'YYYY-MM-DD HH24:00')",
+                'minute' => "to_char($dateColumn, 'YYYY-MM-DD HH24:mi:00')",
+            },
+            'sqlsrv' => match ($this->unit) {
+                'year' => "FORMAT($dateColumn, 'yyyy')",
+                'month' => "FORMAT($dateColumn, 'yyyy-MM')",
+                'week' => "concat(YEAR($dateColumn), '-', datepart(ISO_WEEK, $dateColumn))",
+                'day' => "FORMAT($dateColumn, 'yyyy-MM-dd')",
+                'hour' => "FORMAT($dateColumn, 'yyyy-MM-dd HH:00')",
+                'minute' => "FORMAT($dateColumn, 'yyyy-MM-dd HH:mm:00')",
+            },
+            default => throw new \InvalidArgumentException('Laravel Easy Metrics is not supported for this database.')
+        };
     }
 
     protected function getFormat(): string
