@@ -186,7 +186,7 @@ class Trend extends Metric
         $grammar = $this->query->getQuery()->getGrammar();
         $dateColumn = $grammar->wrap($this->getDateColumn());
 
-        if (!in_array($this->unit, ['year', 'month', 'week', 'day', 'hour', 'minute'], true)) {
+        if (! in_array($this->unit, ['year', 'month', 'week', 'day', 'hour', 'minute'], true)) {
             throw new \InvalidArgumentException("Invalid unit: {$this->unit}");
         }
 
@@ -197,7 +197,7 @@ class Trend extends Metric
                     'month' => "strftime('%Y-%m', $dateColumn)",
                     'week' => "strftime('%x-%v', $dateColumn)",
                     'day' => "strftime('%Y-%m-%d', $dateColumn)",
-                    'hour' => "strftime('%Y-%m-%d %H:00', $dateColumn, )",
+                    'hour' => "strftime('%Y-%m-%d %H:00', $dateColumn)",
                     'minute' => "strftime('%Y-%m-%d %H:%i:00', $dateColumn)",
                 };
             case 'mariadb':
@@ -221,12 +221,12 @@ class Trend extends Metric
                 };
             case 'sqlsrv':
                 return match ($this->unit) {
-                    'year' => "FORMAT($dateColumn, 'YYYY')",
-                    'month' => "FORMAT($dateColumn, 'YYYY-MM')",
-                    'week' => "FORMAT($dateColumn, 'IYYY-IW')",
-                    'day' => "FORMAT($dateColumn, 'YYYY-MM-DD')",
-                    'hour' => "FORMAT($dateColumn, 'YYYY-MM-DD HH24:00')",
-                    'minute' => "FORMAT($dateColumn, 'YYYY-MM-DD HH24:mi:00')",
+                    'year' => "DATEPART(year, $dateColumn)",
+                    'month' => "DATEPART(month, $dateColumn)",
+                    'week' => "DATEPART(week, $dateColumn)",
+                    'day' => "DATEPART(day, $dateColumn)",
+                    'hour' => "DATEPART(hour, $dateColumn)",
+                    'minute' => "DATEPART(minute, $dateColumn)",
                 };
             default:
                 throw new \InvalidArgumentException('Laravel Easy Metrics is not supported for this database.');
