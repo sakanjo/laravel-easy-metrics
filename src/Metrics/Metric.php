@@ -34,7 +34,7 @@ abstract class Metric
     public function __construct(
         string|Builder $query,
     ) {
-        $this->query = is_string($query) ? $query::query() : $query;
+        $this->query = is_string($query) ? $query::query() : $query->clone();
     }
 
     public static function make(string|Builder $query): static
