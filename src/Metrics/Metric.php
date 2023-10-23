@@ -55,7 +55,9 @@ abstract class Metric
 
     public function range(int|string|Range|null $range): static
     {
-        $range = Range::tryFrom($range) ?? $range;
+        if (! $range instanceof Range && ! is_null($range)) {
+            $range = Range::tryFrom($range);
+        }
 
         if (in_array($range, $this->getRanges())) {
             $this->range = $range;
