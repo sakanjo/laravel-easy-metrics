@@ -238,7 +238,7 @@ class Trend extends Metric
         return match ($this->unit) {
             'year' => 'Y',
             'month' => 'Y-m',
-            'week' => 'x-v',
+            'week' => 'Y-W',
             'day' => 'Y-m-d',
             'hour' => 'Y-m-d H:00',
             'minute' => 'Y-m-d H:i:00',
