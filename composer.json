@@ -22,11 +22,19 @@
     },
     "require-dev": {
         "laravel/pint": "^1.13",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "pestphp/pest": "^2.24",
+        "orchestra/testbench": "^8.14"
     },
     "autoload": {
         "psr-4": {
             "SaKanjo\\EasyMetrics\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SaKanjo\\EasyMetrics\\Tests\\": "tests/src/",
+            "SaKanjo\\EasyMetrics\\Tests\\Database\\Factories\\": "tests/database/factories"
         }
     },
     "extra": {
@@ -37,5 +45,19 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "pint": "pint",
+        "test:pest": "pest --parallel",
+        "test:phpstan": "phpstan analyse",
+        "test": [
+            "@test:pest",
+            "@test:phpstan"
+        ]
+    }
 }
