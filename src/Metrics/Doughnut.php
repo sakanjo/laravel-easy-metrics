@@ -89,9 +89,7 @@ class Doughnut extends Metric
 
         $options = array_fill_keys($this->options ?? [], 0);
 
-        $data = collect($options)
-            ->replace($results)
-            ->toArray();
+        $data = array_replace($options, $results);
 
         return Result::make(
             array_values($data),
