@@ -285,6 +285,7 @@ class Trend extends Metric
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
 
         $results = $this->query
+            ->withoutEagerLoads()
             ->selectRaw("{$expression} as date_result, {$this->type}($column) as result")
             ->whereBetween($dateColumn, [$startingDate, $endingDate])
             ->groupBy('date_result')

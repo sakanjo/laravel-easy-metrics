@@ -44,6 +44,7 @@ class Value extends Metric
         $range = $this->currentRange();
 
         $value = $this->query
+            ->withoutEagerLoads()
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
             )

@@ -70,6 +70,7 @@ class Doughnut extends Metric
         $range = $this->currentRange();
 
         $results = $this->query
+            ->withoutEagerLoads()
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
             )
