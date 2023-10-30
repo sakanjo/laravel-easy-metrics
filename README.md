@@ -37,6 +37,11 @@ Table of contents
   * [Other metrics](#other-metrics)
 * [Ranges](#ranges)
   * [Available custom ranges](#available-custom-ranges)
+* [Growth rates](#growth-rates)
+  * [Using value metric](#using-value-metric)
+  * [Using trend metric](#using-trend-metric)
+  * [Using doughnut metric](#using-doughnut-metric)
+  * [Available growth rate types](#available-growth-rate-types)
 * [Practical examples](#practical-examples)
      * [Filamentphp v3 widgets](#filamentphp-v3-widgets)
 * [Support the development](#support-the-development)
@@ -256,6 +261,53 @@ Value::make(User::class)
 - `Range::QTD`
 - `Range::YTD`
 - `Range::ALL`
+
+## Growth rates
+
+Growth rate, expressed as both a **value** and a **percentage**, measures the change in a quantity over **time**, showing the speed of its expansion or contraction in both absolute and relative terms.
+
+### Using **Value** metric
+
+```php
+use SaKanjo\EasyMetrics\Metrics\Value;
+use SaKanjo\EasyMetrics\Enums\GrowthRateType;
+use App\Models\User;
+
+[$value, $growth] = Value::make(User::class)
+    ->withGrowthRate()
+    ->growthRateType(GrowthRateType::Value) // default is `Percentage`
+    ->count();
+```
+
+### Using **Trend** metric
+
+```php
+use SaKanjo\EasyMetrics\Metrics\Trend;
+use App\Models\User;
+
+[$labels, $data, $growth] = Trend::make(User::class)
+    ->withGrowthRate()
+    ->countByYears();
+```
+
+### Using **Doughnut** metric
+
+```php
+use SaKanjo\EasyMetrics\Metrics\Doughnut;
+use App\Models\User;
+use App\Enums\Gender;
+
+[$labels, $data, $growth] = Doughnut::make(User::class)
+    ->options(Gender::class)
+    ->withGrowthRate()
+    ->count('gender');
+```
+
+
+### Available growth rate types
+
+- `GrowthRateType::Value`
+- `GrowthRateType::Percentage`
 
 ## 🔥 Practical examples
 

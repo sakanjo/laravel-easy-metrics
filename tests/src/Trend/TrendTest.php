@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Date;
+use SaKanjo\EasyMetrics\Enums\growthRateType;
 use SaKanjo\EasyMetrics\Metrics\Trend;
 use SaKanjo\EasyMetrics\Tests\Enums\Gender;
 use SaKanjo\EasyMetrics\Tests\Models\User;
@@ -738,4 +739,166 @@ it('shows correct data for minByYears method', function () {
     assertEquals($trend->getData(), [
         0, 0, 40, 25, 0, 0, 0, 10, 30, 20,
     ]);
+});
+
+// Growth rate
+
+it('shows correct growth rate for countByYears method', function () {
+    $sequence = new Sequence(
+        ['gender' => Gender::Male, 'created_at' => Date::now()],
+        ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(1)],
+        ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(2)],
+        ['gender' => Gender::Male, 'created_at' => Date::now()],
+        ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(6)],
+        ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(7)],
+    );
+
+    User::factory()
+        ->count(count($sequence))
+        ->state($sequence)
+        ->create();
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Value)
+        ->countByYears();
+
+    assertEquals($trend->getGrowthRate(), -1);
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Percentage)
+        ->countByYears();
+
+    assertEquals($trend->getGrowthRate(), -50);
+});
+
+it('shows correct growth rate for averageByYears method', function () {
+    $sequence = new Sequence(
+        ['age' => 20, 'created_at' => Date::now()],
+        ['age' => 30, 'created_at' => Date::now()->subYears(1)],
+        ['age' => 10, 'created_at' => Date::now()->subYears(2)],
+        ['age' => 50, 'created_at' => Date::now()],
+        ['age' => 25, 'created_at' => Date::now()->subYears(6)],
+        ['age' => 40, 'created_at' => Date::now()->subYears(7)],
+    );
+
+    User::factory()
+        ->count(count($sequence))
+        ->state($sequence)
+        ->create();
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Value)
+        ->averageByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -5);
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Percentage)
+        ->averageByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -14.29);
+});
+
+it('shows correct growth rate for sumByYears method', function () {
+    $sequence = new Sequence(
+        ['age' => 20, 'created_at' => Date::now()],
+        ['age' => 30, 'created_at' => Date::now()->subYears(1)],
+        ['age' => 10, 'created_at' => Date::now()->subYears(2)],
+        ['age' => 50, 'created_at' => Date::now()],
+        ['age' => 25, 'created_at' => Date::now()->subYears(6)],
+        ['age' => 40, 'created_at' => Date::now()->subYears(7)],
+    );
+
+    User::factory()
+        ->count(count($sequence))
+        ->state($sequence)
+        ->create();
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Value)
+        ->sumByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -40);
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Percentage)
+        ->sumByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -57.14);
+});
+
+it('shows correct growth rate for maxByYears method', function () {
+    $sequence = new Sequence(
+        ['age' => 20, 'created_at' => Date::now()],
+        ['age' => 30, 'created_at' => Date::now()->subYears(1)],
+        ['age' => 10, 'created_at' => Date::now()->subYears(2)],
+        ['age' => 50, 'created_at' => Date::now()],
+        ['age' => 25, 'created_at' => Date::now()->subYears(6)],
+        ['age' => 40, 'created_at' => Date::now()->subYears(7)],
+    );
+
+    User::factory()
+        ->count(count($sequence))
+        ->state($sequence)
+        ->create();
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Value)
+        ->maxByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -20);
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Percentage)
+        ->maxByYears('age');
+
+    assertEquals($trend->getGrowthRate(), -40);
+});
+
+it('shows correct growth rate for minByYears method', function () {
+    $sequence = new Sequence(
+        ['age' => 20, 'created_at' => Date::now()],
+        ['age' => 30, 'created_at' => Date::now()->subYears(1)],
+        ['age' => 10, 'created_at' => Date::now()->subYears(2)],
+        ['age' => 50, 'created_at' => Date::now()],
+        ['age' => 25, 'created_at' => Date::now()->subYears(6)],
+        ['age' => 40, 'created_at' => Date::now()->subYears(7)],
+    );
+
+    User::factory()
+        ->count(count($sequence))
+        ->state($sequence)
+        ->create();
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Value)
+        ->minByYears('age');
+
+    assertEquals($trend->getGrowthRate(), 10);
+
+    $trend = Trend::make(User::class)
+        ->ranges([10])
+        ->withGrowthRate()
+        ->growthRateType(growthRateType::Percentage)
+        ->minByYears('age');
+
+    assertEquals($trend->getGrowthRate(), 50);
 });

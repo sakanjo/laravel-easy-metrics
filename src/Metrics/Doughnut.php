@@ -64,12 +64,12 @@ class Doughnut extends Metric
         return $this->resolve();
     }
 
-    public function resolve(): Result
+    public function resolveValue(?array $range): array
     {
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
-        $range = $this->currentRange();
 
         $results = $this->query
+            ->clone()
             ->withoutEagerLoads()
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
@@ -91,9 +91,59 @@ class Doughnut extends Metric
 
         $data = array_replace($options, $results);
 
+        return $data;
+    }
+
+    public function resolvePreviousValue(): array
+    {
+        $range = $this->previousRange();
+
+        if (! $range) {
+            return [];
+        }
+
+        return $this->resolveValue($range);
+    }
+
+    public function resolveCurrentValue(): array
+    {
+        return $this->resolveValue(
+            $this->currentRange()
+        );
+    }
+
+    public function resolveGrowthRate(array $previousData, array $currentData): array
+    {
+        $growthRate = [];
+
+        foreach ($currentData as $key => $currentValue) {
+            $previousValue = $previousData[$key] ?? 0;
+
+            $growthRate[$key] = $this->growthRateType->getValue($previousValue, $currentValue);
+        }
+
+        return $growthRate;
+    }
+
+    public function resolve(): Result
+    {
+        if (! $this->withGrowthRate) {
+            $data = $this->resolveCurrentValue();
+
+            return Result::make(
+                array_values($data),
+                array_keys($data),
+                null
+            );
+        }
+
+        $previousData = $this->resolvePreviousValue();
+        $currentData = $this->resolveCurrentValue();
+
         return Result::make(
-            array_values($data),
-            array_keys($data)
+            array_values($currentData),
+            array_keys($currentData),
+            $this->resolveGrowthRate($previousData, $currentData)
         );
     }
 }

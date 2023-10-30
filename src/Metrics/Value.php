@@ -3,6 +3,7 @@
 namespace SaKanjo\EasyMetrics\Metrics;
 
 use Illuminate\Database\Eloquent\Builder;
+use SaKanjo\EasyMetrics\ValueResult;
 
 class Value extends Metric
 {
@@ -31,7 +32,7 @@ class Value extends Metric
         return $this->setType('count', $column);
     }
 
-    protected function setType(string $type, string $column): float
+    protected function setType(string $type, string $column): float|ValueResult
     {
         $this->type = $type;
         $this->column = $column;
@@ -39,11 +40,10 @@ class Value extends Metric
         return $this->resolve();
     }
 
-    protected function resolve(): float
+    protected function resolveValue(?array $range): float
     {
-        $range = $this->currentRange();
-
         $value = $this->query
+            ->clone()
             ->withoutEagerLoads()
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
@@ -51,5 +51,38 @@ class Value extends Metric
             ->{$this->type}($this->column);
 
         return $this->transformResult($value);
+    }
+
+    public function resolvePreviousValue(): float
+    {
+        $range = $this->previousRange();
+
+        if (! $range) {
+            return 0;
+        }
+
+        return $this->resolveValue($range);
+    }
+
+    public function resolveCurrentValue(): float
+    {
+        return $this->resolveValue(
+            $this->currentRange()
+        );
+    }
+
+    protected function resolve(): float|ValueResult
+    {
+        if (! $this->withGrowthRate) {
+            return $this->resolveCurrentValue();
+        }
+
+        $currentValue = $this->resolveCurrentValue();
+        $previousValue = $this->resolvePreviousValue();
+
+        return ValueResult::make(
+            $currentValue,
+            $this->growthRateType->getValue($previousValue, $currentValue)
+        );
     }
 }

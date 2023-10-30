@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
+use SaKanjo\EasyMetrics\Enums\GrowthRateType;
 use SaKanjo\EasyMetrics\Enums\Range;
 
 abstract class Metric
@@ -22,6 +23,10 @@ abstract class Metric
     protected string $column;
 
     protected int|Range|null $range = null;
+
+    protected bool $withGrowthRate = false;
+
+    protected GrowthRateType $growthRateType = GrowthRateType::Percentage;
 
     /**
      * @var int[]|Range[]
@@ -49,6 +54,20 @@ abstract class Metric
     public function modifyQuery(callable $callback): static
     {
         $callback($this->query);
+
+        return $this;
+    }
+
+    public function withGrowthRate(bool $withGrowthRate = true): static
+    {
+        $this->withGrowthRate = $withGrowthRate;
+
+        return $this;
+    }
+
+    public function growthRateType(GrowthRateType $growthRateType): static
+    {
+        $this->growthRateType = $growthRateType;
 
         return $this;
     }
@@ -102,6 +121,20 @@ abstract class Metric
         return [
             $this->getDateColumn(),
             $range,
+        ];
+    }
+
+    protected function previousRange(): ?array
+    {
+        $range = $this->getRange();
+
+        if ($range instanceof Range) {
+            return $range->getPreviousRange();
+        }
+
+        return [
+            Date::now()->subDays($range * 2),
+            Date::now()->subDays($range),
         ];
     }
 

@@ -7,43 +7,31 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 
-class Result implements ArrayAccess, Responsable
+class ValueResult implements ArrayAccess, Responsable
 {
     public array $container;
 
     public function __construct(
-        protected array $data,
-        protected array $labels,
-        protected null|float|array $growthRate
+        protected float $value,
+        protected ?float $growthRate = null
     ) {
-        $this->container = [$labels, $data, $growthRate];
+        $this->container = [$value, $growthRate];
     }
 
-    public static function make(array $data, array $labels, null|float|array $growthRate): static
+    public static function make(float $value, ?float $growthRate): static
     {
         return App::make(static::class, [
-            'data' => $data,
-            'labels' => $labels,
+            'value' => $value,
             'growthRate' => $growthRate,
         ]);
     }
 
-    public function getOptions(): array
+    public function getValue(): float
     {
-        return array_combine($this->labels, $this->data);
+        return $this->value;
     }
 
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    public function getLabels(): array
-    {
-        return $this->labels;
-    }
-
-    public function getGrowthRate(): null|float|array
+    public function getGrowthRate(): ?float
     {
         return $this->growthRate;
     }
@@ -51,13 +39,13 @@ class Result implements ArrayAccess, Responsable
     public function toResponse($request): Response
     {
         return new Response(
-            $this->getData()
+            $this->getValue()
         );
     }
 
     public function offsetSet($offset, $value): void
     {
-        throw new \Exception('Result is immutable');
+        throw new \Exception('ValueResult is immutable');
     }
 
     public function offsetExists($offset): bool
@@ -67,7 +55,7 @@ class Result implements ArrayAccess, Responsable
 
     public function offsetUnset($offset): void
     {
-        throw new \Exception('Result is immutable');
+        throw new \Exception('ValueResult is immutable');
     }
 
     public function offsetGet($offset): mixed

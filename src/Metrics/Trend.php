@@ -305,9 +305,14 @@ class Trend extends Metric
             ->take(-count($periods))
             ->toArray();
 
+        $growth = count($data) < 2
+            ? null
+            : $this->growthRateType->getValue(end($data), prev($data));
+
         return Result::make(
             array_values($data),
-            array_keys($data)
+            array_keys($data),
+            $growth
         );
     }
 }
