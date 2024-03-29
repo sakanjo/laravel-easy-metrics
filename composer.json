@@ -54,7 +54,8 @@
     "scripts": {
         "test": [
             "@php vendor/bin/pint --test",
-            "@php vendor/bin/phpstan"
+            "@php vendor/bin/phpstan",
+            "@php vendor/bin/pest --parallel"
         ]
     }
 }
