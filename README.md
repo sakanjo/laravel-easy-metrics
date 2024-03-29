@@ -29,9 +29,9 @@
 Table of contents
 =================
 
-* [Install](#install)
-* [Usage](#usage)
-  * [Value metric](#value-metrics)
+* [Install](#-install)
+* [Usage](#-usage)
+  * [Value metric](#value-metric)
   * [Doughnut metric](#doughnut-metric)
   * [Trend metric](#trend-metric)
   * [Other metrics](#other-metrics)
@@ -42,11 +42,11 @@ Table of contents
   * [Using trend metric](#using-trend-metric)
   * [Using doughnut metric](#using-doughnut-metric)
   * [Available growth rate types](#available-growth-rate-types)
-* [Practical examples](#practical-examples)
+* [Practical examples](#-practical-examples)
      * [Filamentphp v3 widgets](#filamentphp-v3-widgets)
-* [Support the development](#support-the-development)
-* [Credits](#credits)
-* [License](#license)
+* [Support the development](#-support-the-development)
+* [Credits](#%EF%B8%8F-credits)
+* [License](#-license)
 
 ## 📦 Install
 
