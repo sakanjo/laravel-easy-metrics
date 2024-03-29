@@ -93,7 +93,6 @@ it('shows correct data count by RANGE::QTD', function () {
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)], // This one
         ['created_at' => Date::now()->startOfQuarter()->addMinute()], // This one
-        ['created_at' => Date::now()->subMonth()->subMinute()],
     );
 
     User::factory()

@@ -200,7 +200,7 @@ class Trend extends Metric
                 'year' => "strftime('%Y', $dateColumn)",
                 'month' => "strftime('%Y-%m', $dateColumn)",
                 'week' => "strftime('%Y-', $dateColumn) ||
-                        ( strftime('%W', $dateColumn) + (1 - strftime('%W', strftime('%Y', $dateColumn) || '-01-04')) )",
+                        printf('%02d', strftime('%W', $dateColumn) + (1 - strftime('%W', strftime('%Y', $dateColumn) || '-01-04')) )",
                 'day' => "strftime('%Y-%m-%d', $dateColumn)",
                 'hour' => "strftime('%Y-%m-%d %H:00', $dateColumn)",
                 'minute' => "strftime('%Y-%m-%d %H:%M:00', $dateColumn)",
