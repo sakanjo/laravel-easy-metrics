@@ -26,6 +26,8 @@ abstract class Metric
 
     protected bool $withGrowthRate = false;
 
+    protected ?string $dateColumn = null;
+
     protected GrowthRateType $growthRateType = GrowthRateType::Percentage;
 
     /**
@@ -111,9 +113,16 @@ abstract class Metric
         return $this->ranges;
     }
 
+    public function dateColumn(string $dateColumn): static
+    {
+        $this->dateColumn = $dateColumn;
+
+        return $this;
+    }
+
     protected function getDateColumn(): string
     {
-        return $this->query->getModel()->getCreatedAtColumn();
+        return $this->dateColumn ?? $this->query->getModel()->getCreatedAtColumn();
     }
 
     protected function resolveBetween(array $range): array
