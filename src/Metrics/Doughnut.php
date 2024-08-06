@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use ReflectionEnum;
 use SaKanjo\EasyMetrics\Result;
 
 class Doughnut extends Metric
@@ -28,6 +29,21 @@ class Doughnut extends Metric
         $this->options = $options;
 
         return $this;
+    }
+
+    public function getOptions(): array
+    {
+        if ($this->options) {
+            return $this->options;
+        }
+
+        $cast = $this->query->getModel()->getCasts()[$this->groupBy] ?? null;
+
+        if ($cast && (new ReflectionEnum($cast))->isBacked()) {
+            return Arr::pluck($cast::cases(), 'value');
+        }
+
+        return [];
     }
 
     public function min(string $column, string $groupBy)
@@ -87,9 +103,20 @@ class Doughnut extends Metric
             })
             ->toArray();
 
-        $options = array_fill_keys($this->options ?? [], 0);
-
+        $options = array_fill_keys($this->getOptions(), 0);
         $data = array_replace($options, $results);
+
+        $cast = $this->query->getModel()->getCasts()[$this->groupBy] ?? null;
+
+        if (
+            $cast &&
+            (new ReflectionEnum($cast))->isBacked() &&
+            method_exists($cast, 'getLabel')
+        ) {
+            $data = Arr::mapWithKeys($data, fn (float $value, mixed $key) => [
+                $cast::from($key)->getLabel() => $value, // @phpstan-ignore-line
+            ]);
+        }
 
         return $data;
     }

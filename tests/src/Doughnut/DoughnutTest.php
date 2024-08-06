@@ -36,7 +36,7 @@ it('shows all options when using `options` method with inital value of 0', funct
     ]);
 });
 
-it('shows limited options when using `options` method', function () {
+it('shows all options when not using `options` method', function () {
     $sequence = [
         // ['gender' => Gender::Male],
         // ['gender' => Gender::Male],
@@ -54,6 +54,7 @@ it('shows limited options when using `options` method', function () {
         ->count('gender');
 
     assertEquals($doughnut->getLabels(), [
+        Gender::Male->value,
         Gender::Female->value,
     ]);
 });
@@ -174,7 +175,6 @@ it('shows correct growth rate for count method by Range::ALL', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::ALL)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -183,7 +183,6 @@ it('shows correct growth rate for count method by Range::ALL', function () {
     assertEquals($doughnut->getGrowthRate(), [2, 3]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::ALL)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)
@@ -206,7 +205,6 @@ it('shows correct growth rate for count method', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -215,7 +213,6 @@ it('shows correct growth rate for count method', function () {
     assertEquals($doughnut->getGrowthRate(), [-1, -1]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)
@@ -238,7 +235,6 @@ it('shows correct growth rate for average method', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -247,7 +243,6 @@ it('shows correct growth rate for average method', function () {
     assertEquals($doughnut->getGrowthRate(), [-35, -30]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)
@@ -270,7 +265,6 @@ it('shows correct growth rate for sum method', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -279,7 +273,6 @@ it('shows correct growth rate for sum method', function () {
     assertEquals($doughnut->getGrowthRate(), [-70, -30]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)
@@ -302,7 +295,6 @@ it('shows correct growth rate for max method', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -311,7 +303,6 @@ it('shows correct growth rate for max method', function () {
     assertEquals($doughnut->getGrowthRate(), [-50, -30]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)
@@ -334,7 +325,6 @@ it('shows correct growth rate for min method', function () {
         ->create();
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Value)
@@ -343,7 +333,6 @@ it('shows correct growth rate for min method', function () {
     assertEquals($doughnut->getGrowthRate(), [-20, -30]);
 
     $doughnut = Doughnut::make(User::class)
-        ->options(Gender::class)
         ->range(Range::TODAY)
         ->withGrowthRate()
         ->growthRateType(GrowthRateType::Percentage)

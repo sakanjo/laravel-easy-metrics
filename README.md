@@ -12,7 +12,7 @@
 
 > ✨ Help support the maintenance of this package by [sponsoring me](https://github.com/sponsors/sakanjo).
 
-> Designed to work with **Laravel**, **Filament**, and more.
+> Designed to work with **Laravel**, **Filament**, [Easy enum](https://github.com/sakanjo/laravel-easy-enum), and more.
 
 ![Preview](./art/preview.png)
 
@@ -42,6 +42,8 @@ Table of contents
   * [Using trend metric](#using-trend-metric)
   * [Using doughnut metric](#using-doughnut-metric)
   * [Available growth rate types](#available-growth-rate-types)
+* [Tips](#-tips)
+     * [using getLabel](#using-getLabel)
 * [Practical examples](#-practical-examples)
      * [Filamentphp v3 widgets](#filamentphp-v3-widgets)
 * [Support the development](#-support-the-development)
@@ -110,14 +112,10 @@ Value::make(User::class)
 ```php
 use SaKanjo\EasyMetrics\Metrics\Doughnut;
 use App\Models\User;
-use App\Enums\Gender;
 
 [$labels, $data] = Doughnut::make(User::class)
-    ->options(Gender::class)
     ->count('gender');
 ```
-
-> It's always better to use the `options` method even though it's optional, since the retrieved data may not include all enum options.
 
 #### Query types
 
@@ -295,10 +293,8 @@ use App\Models\User;
 ```php
 use SaKanjo\EasyMetrics\Metrics\Doughnut;
 use App\Models\User;
-use App\Enums\Gender;
 
 [$labels, $data, $growth] = Doughnut::make(User::class)
-    ->options(Gender::class)
     ->withGrowthRate()
     ->count('gender');
 ```
@@ -308,6 +304,28 @@ use App\Enums\Gender;
 
 - `GrowthRateType::Value`
 - `GrowthRateType::Percentage`
+
+## 🔥 Tips
+
+#### Using getLabel
+
+You can use the `getLabel` method to customize the retreived data labels, for example:
+
+```php
+<?php
+
+namespace App\Enums;
+
+use SaKanjo\EasyEnum;
+
+enum ExampleEnum: int
+{
+    use EasyEnum; // Includes getLabel method
+
+    case Active = 0;
+    case Disabled = 1;
+}
+```
 
 ## 🔥 Practical examples
 
