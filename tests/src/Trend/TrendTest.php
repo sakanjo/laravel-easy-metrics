@@ -764,7 +764,7 @@ it('shows correct growth rate for countByYears method', function () {
         ->growthRateType(growthRateType::Value)
         ->countByYears();
 
-    assertEquals($trend->getGrowthRate(), -1);
+    assertEquals($trend->getGrowthRate(), 1);
 
     $trend = Trend::make(User::class)
         ->ranges([10])
@@ -772,7 +772,7 @@ it('shows correct growth rate for countByYears method', function () {
         ->growthRateType(growthRateType::Percentage)
         ->countByYears();
 
-    assertEquals($trend->getGrowthRate(), -50);
+    assertEquals($trend->getGrowthRate(), 100);
 });
 
 it('shows correct growth rate for averageByYears method', function () {
@@ -796,7 +796,7 @@ it('shows correct growth rate for averageByYears method', function () {
         ->growthRateType(growthRateType::Value)
         ->averageByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -5);
+    assertEquals($trend->getGrowthRate(), 5);
 
     $trend = Trend::make(User::class)
         ->ranges([10])
@@ -804,7 +804,7 @@ it('shows correct growth rate for averageByYears method', function () {
         ->growthRateType(growthRateType::Percentage)
         ->averageByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -14.29);
+    assertEquals($trend->getGrowthRate(), 16.67);
 });
 
 it('shows correct growth rate for sumByYears method', function () {
@@ -828,7 +828,7 @@ it('shows correct growth rate for sumByYears method', function () {
         ->growthRateType(growthRateType::Value)
         ->sumByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -40);
+    assertEquals($trend->getGrowthRate(), 40);
 
     $trend = Trend::make(User::class)
         ->ranges([10])
@@ -836,7 +836,7 @@ it('shows correct growth rate for sumByYears method', function () {
         ->growthRateType(growthRateType::Percentage)
         ->sumByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -57.14);
+    assertEquals($trend->getGrowthRate(), 133.33);
 });
 
 it('shows correct growth rate for maxByYears method', function () {
@@ -860,7 +860,7 @@ it('shows correct growth rate for maxByYears method', function () {
         ->growthRateType(growthRateType::Value)
         ->maxByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -20);
+    assertEquals($trend->getGrowthRate(), 20);
 
     $trend = Trend::make(User::class)
         ->ranges([10])
@@ -868,7 +868,7 @@ it('shows correct growth rate for maxByYears method', function () {
         ->growthRateType(growthRateType::Percentage)
         ->maxByYears('age');
 
-    assertEquals($trend->getGrowthRate(), -40);
+    assertEquals($trend->getGrowthRate(), 66.67);
 });
 
 it('shows correct growth rate for minByYears method', function () {
@@ -892,7 +892,7 @@ it('shows correct growth rate for minByYears method', function () {
         ->growthRateType(growthRateType::Value)
         ->minByYears('age');
 
-    assertEquals($trend->getGrowthRate(), 10);
+    assertEquals($trend->getGrowthRate(), -10);
 
     $trend = Trend::make(User::class)
         ->ranges([10])
@@ -900,5 +900,5 @@ it('shows correct growth rate for minByYears method', function () {
         ->growthRateType(growthRateType::Percentage)
         ->minByYears('age');
 
-    assertEquals($trend->getGrowthRate(), 50);
+    assertEquals($trend->getGrowthRate(), -33.33);
 });

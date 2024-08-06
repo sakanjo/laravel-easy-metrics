@@ -307,7 +307,7 @@ class Trend extends Metric
 
         $growth = count($data) < 2
             ? null
-            : $this->growthRateType->getValue(end($data), prev($data));
+            : $this->growthRateType->getValue(currentValue: end($data), previousValue: prev($data));
 
         return Result::make(
             array_values($data),
