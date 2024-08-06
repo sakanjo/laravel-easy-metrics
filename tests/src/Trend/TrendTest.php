@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Date;
 use SaKanjo\EasyMetrics\Enums\growthRateType;
 use SaKanjo\EasyMetrics\Metrics\Trend;
@@ -15,18 +14,17 @@ uses(TestCase::class);
 // countBy
 
 it('shows correct data for countByMinutes method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subMinutes(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subMinutes(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subMinutes(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subMinutes(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -39,18 +37,17 @@ it('shows correct data for countByMinutes method', function () {
 });
 
 it('shows correct data for countByHours method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subHours(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subHours(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subHours(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subHours(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -63,18 +60,17 @@ it('shows correct data for countByHours method', function () {
 });
 
 it('shows correct data for countByDays method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subDays(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subDays(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subDays(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -87,18 +83,17 @@ it('shows correct data for countByDays method', function () {
 });
 
 it('shows correct data for countByWeeks method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subWeeks(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subWeeks(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subWeeks(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subWeeks(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -110,18 +105,17 @@ it('shows correct data for countByWeeks method', function () {
 });
 
 it('shows correct data for countByMonths method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subMonths(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subMonths(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subMonths(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subMonths(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -134,18 +128,17 @@ it('shows correct data for countByMonths method', function () {
 });
 
 it('shows correct data for countByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -160,18 +153,17 @@ it('shows correct data for countByYears method', function () {
 // averageBy
 
 it('shows correct data for averageByMinutes method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMinutes(1)],
         ['age' => 10, 'created_at' => Date::now()->subMinutes(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMinutes(6)],
         ['age' => 40, 'created_at' => Date::now()->subMinutes(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -184,18 +176,17 @@ it('shows correct data for averageByMinutes method', function () {
 });
 
 it('shows correct data for averageByHours method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subHours(1)],
         ['age' => 10, 'created_at' => Date::now()->subHours(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subHours(6)],
         ['age' => 40, 'created_at' => Date::now()->subHours(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -208,18 +199,17 @@ it('shows correct data for averageByHours method', function () {
 });
 
 it('shows correct data for averageByDays method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subDays(1)],
         ['age' => 10, 'created_at' => Date::now()->subDays(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subDays(6)],
         ['age' => 40, 'created_at' => Date::now()->subDays(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -232,18 +222,17 @@ it('shows correct data for averageByDays method', function () {
 });
 
 it('shows correct data for averageByWeeks method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subWeeks(1)],
         ['age' => 10, 'created_at' => Date::now()->subWeeks(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subWeeks(6)],
         ['age' => 40, 'created_at' => Date::now()->subWeeks(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -256,18 +245,17 @@ it('shows correct data for averageByWeeks method', function () {
 });
 
 it('shows correct data for averageByMonths method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMonths(1)],
         ['age' => 10, 'created_at' => Date::now()->subMonths(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMonths(6)],
         ['age' => 40, 'created_at' => Date::now()->subMonths(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -280,18 +268,17 @@ it('shows correct data for averageByMonths method', function () {
 });
 
 it('shows correct data for averageByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -306,18 +293,17 @@ it('shows correct data for averageByYears method', function () {
 // sumBy
 
 it('shows correct data for sumByMinutes method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMinutes(1)],
         ['age' => 10, 'created_at' => Date::now()->subMinutes(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMinutes(6)],
         ['age' => 40, 'created_at' => Date::now()->subMinutes(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -330,18 +316,17 @@ it('shows correct data for sumByMinutes method', function () {
 });
 
 it('shows correct data for sumByHours method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subHours(1)],
         ['age' => 10, 'created_at' => Date::now()->subHours(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subHours(6)],
         ['age' => 40, 'created_at' => Date::now()->subHours(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -354,18 +339,17 @@ it('shows correct data for sumByHours method', function () {
 });
 
 it('shows correct data for sumByDays method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subDays(1)],
         ['age' => 10, 'created_at' => Date::now()->subDays(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subDays(6)],
         ['age' => 40, 'created_at' => Date::now()->subDays(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -378,18 +362,17 @@ it('shows correct data for sumByDays method', function () {
 });
 
 it('shows correct data for sumByWeeks method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subWeeks(1)],
         ['age' => 10, 'created_at' => Date::now()->subWeeks(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subWeeks(6)],
         ['age' => 40, 'created_at' => Date::now()->subWeeks(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -402,18 +385,17 @@ it('shows correct data for sumByWeeks method', function () {
 });
 
 it('shows correct data for sumByMonths method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMonths(1)],
         ['age' => 10, 'created_at' => Date::now()->subMonths(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMonths(6)],
         ['age' => 40, 'created_at' => Date::now()->subMonths(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -426,18 +408,17 @@ it('shows correct data for sumByMonths method', function () {
 });
 
 it('shows correct data for sumByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -452,18 +433,17 @@ it('shows correct data for sumByYears method', function () {
 // maxBy
 
 it('shows correct data for maxByMinutes method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMinutes(1)],
         ['age' => 10, 'created_at' => Date::now()->subMinutes(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMinutes(6)],
         ['age' => 40, 'created_at' => Date::now()->subMinutes(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -476,18 +456,17 @@ it('shows correct data for maxByMinutes method', function () {
 });
 
 it('shows correct data for maxByHours method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subHours(1)],
         ['age' => 10, 'created_at' => Date::now()->subHours(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subHours(6)],
         ['age' => 40, 'created_at' => Date::now()->subHours(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -500,18 +479,17 @@ it('shows correct data for maxByHours method', function () {
 });
 
 it('shows correct data for maxByDays method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subDays(1)],
         ['age' => 10, 'created_at' => Date::now()->subDays(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subDays(6)],
         ['age' => 40, 'created_at' => Date::now()->subDays(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -524,18 +502,17 @@ it('shows correct data for maxByDays method', function () {
 });
 
 it('shows correct data for maxByWeeks method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subWeeks(1)],
         ['age' => 10, 'created_at' => Date::now()->subWeeks(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subWeeks(6)],
         ['age' => 40, 'created_at' => Date::now()->subWeeks(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -548,18 +525,17 @@ it('shows correct data for maxByWeeks method', function () {
 });
 
 it('shows correct data for maxByMonths method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMonths(1)],
         ['age' => 10, 'created_at' => Date::now()->subMonths(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMonths(6)],
         ['age' => 40, 'created_at' => Date::now()->subMonths(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -572,18 +548,17 @@ it('shows correct data for maxByMonths method', function () {
 });
 
 it('shows correct data for maxByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -598,18 +573,17 @@ it('shows correct data for maxByYears method', function () {
 // minBy
 
 it('shows correct data for minByMinutes method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMinutes(1)],
         ['age' => 10, 'created_at' => Date::now()->subMinutes(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMinutes(6)],
         ['age' => 40, 'created_at' => Date::now()->subMinutes(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -622,18 +596,17 @@ it('shows correct data for minByMinutes method', function () {
 });
 
 it('shows correct data for minByHours method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subHours(1)],
         ['age' => 10, 'created_at' => Date::now()->subHours(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subHours(6)],
         ['age' => 40, 'created_at' => Date::now()->subHours(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -646,18 +619,17 @@ it('shows correct data for minByHours method', function () {
 });
 
 it('shows correct data for minByDays method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subDays(1)],
         ['age' => 10, 'created_at' => Date::now()->subDays(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subDays(6)],
         ['age' => 40, 'created_at' => Date::now()->subDays(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -670,18 +642,17 @@ it('shows correct data for minByDays method', function () {
 });
 
 it('shows correct data for minByWeeks method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subWeeks(1)],
         ['age' => 10, 'created_at' => Date::now()->subWeeks(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subWeeks(6)],
         ['age' => 40, 'created_at' => Date::now()->subWeeks(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -694,18 +665,17 @@ it('shows correct data for minByWeeks method', function () {
 });
 
 it('shows correct data for minByMonths method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subMonths(1)],
         ['age' => 10, 'created_at' => Date::now()->subMonths(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subMonths(6)],
         ['age' => 40, 'created_at' => Date::now()->subMonths(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -718,18 +688,17 @@ it('shows correct data for minByMonths method', function () {
 });
 
 it('shows correct data for minByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -744,18 +713,17 @@ it('shows correct data for minByYears method', function () {
 // Growth rate
 
 it('shows correct growth rate for countByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(2)],
         ['gender' => Gender::Male, 'created_at' => Date::now()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->subYears(6)],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -776,18 +744,17 @@ it('shows correct growth rate for countByYears method', function () {
 });
 
 it('shows correct growth rate for averageByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -808,18 +775,17 @@ it('shows correct growth rate for averageByYears method', function () {
 });
 
 it('shows correct growth rate for sumByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -840,18 +806,17 @@ it('shows correct growth rate for sumByYears method', function () {
 });
 
 it('shows correct growth rate for maxByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)
@@ -872,18 +837,17 @@ it('shows correct growth rate for maxByYears method', function () {
 });
 
 it('shows correct growth rate for minByYears method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'created_at' => Date::now()],
         ['age' => 30, 'created_at' => Date::now()->subYears(1)],
         ['age' => 10, 'created_at' => Date::now()->subYears(2)],
         ['age' => 50, 'created_at' => Date::now()],
         ['age' => 25, 'created_at' => Date::now()->subYears(6)],
         ['age' => 40, 'created_at' => Date::now()->subYears(7)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $trend = Trend::make(User::class)

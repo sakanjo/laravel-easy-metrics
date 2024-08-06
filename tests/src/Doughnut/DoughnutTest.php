@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Date;
 use SaKanjo\EasyMetrics\Enums\GrowthRateType;
 use SaKanjo\EasyMetrics\Enums\Range;
@@ -14,18 +13,17 @@ use function PHPUnit\Framework\assertEquals;
 uses(TestCase::class);
 
 it('shows all options when using `options` method with inital value of 0', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male],
         ['gender' => Gender::Male],
         // ['gender' => Gender::Female],
         ['gender' => Gender::Male],
         // ['gender' => Gender::Female],
         ['gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -39,18 +37,17 @@ it('shows all options when using `options` method with inital value of 0', funct
 });
 
 it('shows limited options when using `options` method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         // ['gender' => Gender::Male],
         // ['gender' => Gender::Male],
         ['gender' => Gender::Female],
         // ['gender' => Gender::Male],
         ['gender' => Gender::Female],
         // ['gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -62,18 +59,17 @@ it('shows limited options when using `options` method', function () {
 });
 
 it('shows correct data for count method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Male],
         ['gender' => Gender::Male],
         ['gender' => Gender::Female],
         ['gender' => Gender::Male],
         ['gender' => Gender::Female],
         ['gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -83,18 +79,17 @@ it('shows correct data for count method', function () {
 });
 
 it('shows correct data for average method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'gender' => Gender::Male],
         ['age' => 15, 'gender' => Gender::Male],
         ['age' => 60, 'gender' => Gender::Female],
         ['age' => 30, 'gender' => Gender::Male],
         ['age' => 45, 'gender' => Gender::Female],
         ['age' => 50, 'gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -104,18 +99,17 @@ it('shows correct data for average method', function () {
 });
 
 it('shows correct data for sum method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'gender' => Gender::Male],
         ['age' => 15, 'gender' => Gender::Male],
         ['age' => 60, 'gender' => Gender::Female],
         ['age' => 30, 'gender' => Gender::Male],
         ['age' => 45, 'gender' => Gender::Female],
         ['age' => 50, 'gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -125,18 +119,17 @@ it('shows correct data for sum method', function () {
 });
 
 it('shows correct data for max method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'gender' => Gender::Male],
         ['age' => 15, 'gender' => Gender::Male],
         ['age' => 60, 'gender' => Gender::Female],
         ['age' => 30, 'gender' => Gender::Male],
         ['age' => 45, 'gender' => Gender::Female],
         ['age' => 50, 'gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -146,18 +139,17 @@ it('shows correct data for max method', function () {
 });
 
 it('shows correct data for min method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 20, 'gender' => Gender::Male],
         ['age' => 15, 'gender' => Gender::Male],
         ['age' => 60, 'gender' => Gender::Female],
         ['age' => 30, 'gender' => Gender::Male],
         ['age' => 45, 'gender' => Gender::Female],
         ['age' => 50, 'gender' => Gender::Male],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -169,17 +161,16 @@ it('shows correct data for min method', function () {
 // Growth rate
 
 it('shows correct growth rate for count method by Range::ALL', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -202,17 +193,16 @@ it('shows correct growth rate for count method by Range::ALL', function () {
 });
 
 it('shows correct growth rate for count method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['gender' => Gender::Female, 'created_at' => Date::now()],
         ['gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -235,17 +225,16 @@ it('shows correct growth rate for count method', function () {
 });
 
 it('shows correct growth rate for average method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 50, 'gender' => Gender::Male, 'created_at' => Date::now()->yesterday()],
         ['age' => 20, 'gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['age' => 45, 'gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['age' => 15, 'gender' => Gender::Female, 'created_at' => Date::now()],
         ['age' => 60, 'gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -268,17 +257,16 @@ it('shows correct growth rate for average method', function () {
 });
 
 it('shows correct growth rate for sum method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 50, 'gender' => Gender::Male, 'created_at' => Date::now()->yesterday()],
         ['age' => 20, 'gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['age' => 45, 'gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['age' => 15, 'gender' => Gender::Female, 'created_at' => Date::now()],
         ['age' => 60, 'gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -301,17 +289,16 @@ it('shows correct growth rate for sum method', function () {
 });
 
 it('shows correct growth rate for max method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 50, 'gender' => Gender::Male, 'created_at' => Date::now()->yesterday()],
         ['age' => 20, 'gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['age' => 45, 'gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['age' => 15, 'gender' => Gender::Female, 'created_at' => Date::now()],
         ['age' => 60, 'gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)
@@ -334,17 +321,16 @@ it('shows correct growth rate for max method', function () {
 });
 
 it('shows correct growth rate for min method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['age' => 50, 'gender' => Gender::Male, 'created_at' => Date::now()->yesterday()],
         ['age' => 20, 'gender' => Gender::Male, 'created_at' => Date::now()->subDays(1)],
         ['age' => 45, 'gender' => Gender::Female, 'created_at' => Date::now()->yesterday()],
         ['age' => 15, 'gender' => Gender::Female, 'created_at' => Date::now()],
         ['age' => 60, 'gender' => Gender::Male, 'created_at' => Date::now()->addDays(1)],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $doughnut = Doughnut::make(User::class)

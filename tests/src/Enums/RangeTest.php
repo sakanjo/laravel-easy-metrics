@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Date;
 use SaKanjo\EasyMetrics\Enums\Range;
 use SaKanjo\EasyMetrics\Metrics\Value;
@@ -12,7 +11,7 @@ use function PHPUnit\Framework\assertEquals;
 uses(TestCase::class);
 
 it('shows correct data count by RANGE::TODAY', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -20,11 +19,10 @@ it('shows correct data count by RANGE::TODAY', function () {
         ['created_at' => Date::now()->subDays(1)],
         ['created_at' => Date::now()->subDays(2)],
         ['created_at' => Date::now()->subMonth()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -35,7 +33,7 @@ it('shows correct data count by RANGE::TODAY', function () {
 });
 
 it('shows correct data count by RANGE::YESTERDAY', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -44,11 +42,10 @@ it('shows correct data count by RANGE::YESTERDAY', function () {
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)],
         ['created_at' => Date::now()->subMonth()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -59,7 +56,7 @@ it('shows correct data count by RANGE::YESTERDAY', function () {
 });
 
 it('shows correct data count by RANGE::MTD', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -69,11 +66,10 @@ it('shows correct data count by RANGE::MTD', function () {
         ['created_at' => Date::now()->subDays(2)], // This one
         ['created_at' => Date::now()->subMonth()],
         ['created_at' => Date::now()->subMonth()->subMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -84,7 +80,7 @@ it('shows correct data count by RANGE::MTD', function () {
 });
 
 it('shows correct data count by RANGE::QTD', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -93,11 +89,10 @@ it('shows correct data count by RANGE::QTD', function () {
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)], // This one
         ['created_at' => Date::now()->startOfQuarter()->addMinute()], // This one
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -108,7 +103,7 @@ it('shows correct data count by RANGE::QTD', function () {
 });
 
 it('shows correct data count by RANGE::YTD', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -117,11 +112,10 @@ it('shows correct data count by RANGE::YTD', function () {
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)], // This one
         ['created_at' => Date::now()->startOfYear()->addMinute()], // This one
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -132,7 +126,7 @@ it('shows correct data count by RANGE::YTD', function () {
 });
 
 it('shows correct data count by RANGE::ALL', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()], // This one
         ['created_at' => Date::now()->addDays(2)], // This one
         ['created_at' => Date::now()->addDays(1)], // This one
@@ -141,11 +135,10 @@ it('shows correct data count by RANGE::ALL', function () {
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)], // This one
         ['created_at' => Date::now()->startOfYear()->addMinute()], // This one
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -156,7 +149,7 @@ it('shows correct data count by RANGE::ALL', function () {
 });
 
 it('shows correct data count by 15 days', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -164,11 +157,10 @@ it('shows correct data count by 15 days', function () {
         ['created_at' => Date::now()->subDays(1)], // This one
         ['created_at' => Date::now()->yesterday()], // This one
         ['created_at' => Date::now()->subDays(2)], // This one
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -179,18 +171,17 @@ it('shows correct data count by 15 days', function () {
 });
 
 it('shows correct data count by 5 days', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
         ['created_at' => Date::now()], // This one
         ['created_at' => Date::now()->yesterday()], // This one
-        ['created_at' => Date::now()->subDays(6)]
-    );
+        ['created_at' => Date::now()->subDays(6)],
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
