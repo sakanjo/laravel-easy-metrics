@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use ReflectionEnum;
 use SaKanjo\EasyMetrics\Result;
 
@@ -83,6 +84,7 @@ class Doughnut extends Metric
     public function resolveValue(?array $range): array
     {
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
+        $resultSelectAlias = Str::random();
 
         $results = $this->query
             ->clone()
@@ -90,15 +92,15 @@ class Doughnut extends Metric
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
             )
-            ->select([$this->groupBy, DB::raw("{$this->type}($column) as result")])
+            ->select([$this->groupBy, DB::raw("{$this->type}($column) as \"$resultSelectAlias\"")])
             ->groupBy($this->groupBy)
             ->get()
-            ->mapWithKeys(function (Model $model) {
+            ->mapWithKeys(function (Model $model) use ($resultSelectAlias) {
                 $key = $model[$this->groupBy];
                 $key = $key instanceof BackedEnum ? $key->value : $key;
 
                 return [
-                    $key => $this->transformResult($model['result']),
+                    $key => $this->transformResult($model[$resultSelectAlias]),
                 ];
             })
             ->toArray();

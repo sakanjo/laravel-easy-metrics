@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
 use SaKanjo\EasyMetrics\Concerns\OnlyIntegers;
 use SaKanjo\EasyMetrics\Result;
 
@@ -283,15 +284,17 @@ class Trend extends Metric
 
         $expression = $this->getExpression();
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
+        $resultSelectAlias = Str::random();
+        $dateResultSelectAlias = Str::random();
 
         $results = $this->query
             ->withoutEagerLoads()
-            ->selectRaw("{$expression} as date_result, {$this->type}($column) as result")
+            ->selectRaw("{$expression} as \"$dateResultSelectAlias\", {$this->type}($column) as \"$resultSelectAlias\"")
             ->whereBetween($dateColumn, [$startingDate, $endingDate])
-            ->groupBy('date_result')
+            ->groupBy($dateResultSelectAlias)
             ->get()
             ->mapWithKeys(fn (mixed $result) => [
-                $result['date_result'] => $this->transformResult($result['result']),
+                $result[$dateResultSelectAlias] => $this->transformResult($result[$resultSelectAlias]),
             ])
             ->toArray();
 
