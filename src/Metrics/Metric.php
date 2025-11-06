@@ -2,6 +2,7 @@
 
 namespace SaKanjo\EasyMetrics\Metrics;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
@@ -135,6 +136,7 @@ abstract class Metric
     protected function previousRange(): ?array
     {
         $range = $this->getRange();
+        $date = $this->getDate();
 
         if ($range instanceof Range) {
             return $range->getPreviousRange($this->timezone);
@@ -149,6 +151,7 @@ abstract class Metric
     protected function currentRange(): ?array
     {
         $range = $this->getRange();
+        $date = $this->getDate();
 
         if ($range instanceof Range) {
             return $range->getRange($this->timezone);

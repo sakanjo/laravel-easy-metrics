@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Date;
 use SaKanjo\EasyMetrics\Enums\GrowthRateType;
 use SaKanjo\EasyMetrics\Enums\Range;
@@ -13,7 +12,7 @@ use function PHPUnit\Framework\assertEquals;
 uses(TestCase::class);
 
 it('shows correct data for count method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -22,11 +21,10 @@ it('shows correct data for count method', function () {
         ['created_at' => Date::now()->yesterday()],
         ['created_at' => Date::now()->subDays(2)],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -37,7 +35,7 @@ it('shows correct data for count method', function () {
 });
 
 it('shows correct data for average method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -46,11 +44,10 @@ it('shows correct data for average method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -61,7 +58,7 @@ it('shows correct data for average method', function () {
 });
 
 it('shows correct data for sum method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -70,11 +67,10 @@ it('shows correct data for sum method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -85,7 +81,7 @@ it('shows correct data for sum method', function () {
 });
 
 it('shows correct data for max method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -94,11 +90,10 @@ it('shows correct data for max method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -109,7 +104,7 @@ it('shows correct data for max method', function () {
 });
 
 it('shows correct data for min method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -118,11 +113,10 @@ it('shows correct data for min method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     $data = Value::make(User::class)
@@ -135,7 +129,7 @@ it('shows correct data for min method', function () {
 // Growth rate
 
 it('shows correct growth rate for count method by Range::ALL', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -144,11 +138,10 @@ it('shows correct growth rate for count method by Range::ALL', function () {
         ['created_at' => Date::now()->yesterday()],
         ['created_at' => Date::now()->subDays(2)],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)
@@ -170,7 +163,7 @@ it('shows correct growth rate for count method by Range::ALL', function () {
 });
 
 it('shows correct growth rate for count method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -179,11 +172,10 @@ it('shows correct growth rate for count method', function () {
         ['created_at' => Date::now()->yesterday()],
         ['created_at' => Date::now()->subDays(2)],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)
@@ -205,7 +197,7 @@ it('shows correct growth rate for count method', function () {
 });
 
 it('shows correct growth rate for average method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -214,11 +206,10 @@ it('shows correct growth rate for average method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)
@@ -240,7 +231,7 @@ it('shows correct growth rate for average method', function () {
 });
 
 it('shows correct growth rate for sum method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -249,11 +240,10 @@ it('shows correct growth rate for sum method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)
@@ -275,7 +265,7 @@ it('shows correct growth rate for sum method', function () {
 });
 
 it('shows correct growth rate for max method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -284,11 +274,10 @@ it('shows correct growth rate for max method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)
@@ -310,7 +299,7 @@ it('shows correct growth rate for max method', function () {
 });
 
 it('shows correct growth rate for min method', function () {
-    $sequence = new Sequence(
+    $sequence = [
         ['created_at' => Date::now()->addMonth()],
         ['created_at' => Date::now()->addDays(2)],
         ['created_at' => Date::now()->addDays(1)],
@@ -319,11 +308,10 @@ it('shows correct growth rate for min method', function () {
         ['created_at' => Date::now()->yesterday(), 'age' => 15],
         ['created_at' => Date::now()->subDays(2), 'age' => 40],
         ['created_at' => Date::now()->startOfYear()->addMinute()],
-    );
+    ];
 
     User::factory()
-        ->count(count($sequence))
-        ->state($sequence)
+        ->forEachSequence(...$sequence)
         ->create();
 
     [$data, $growth] = Value::make(User::class)

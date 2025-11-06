@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use ReflectionEnum;
 use SaKanjo\EasyMetrics\Result;
 
 class Doughnut extends Metric
@@ -28,6 +30,21 @@ class Doughnut extends Metric
         $this->options = $options;
 
         return $this;
+    }
+
+    public function getOptions(): array
+    {
+        if ($this->options) {
+            return $this->options;
+        }
+
+        $cast = $this->query->getModel()->getCasts()[$this->groupBy] ?? null;
+
+        if ($cast && (new ReflectionEnum($cast))->isBacked()) {
+            return Arr::pluck($cast::cases(), 'value');
+        }
+
+        return [];
     }
 
     public function min(string $column, string $groupBy)
@@ -67,6 +84,7 @@ class Doughnut extends Metric
     public function resolveValue(?array $range): array
     {
         $column = $this->query->getQuery()->getGrammar()->wrap($this->column);
+        $resultSelectAlias = Str::random();
 
         $results = $this->query
             ->clone()
@@ -74,22 +92,33 @@ class Doughnut extends Metric
             ->when($range, fn (Builder $query) => $query
                 ->whereBetween(...$this->resolveBetween($range))
             )
-            ->select([$this->groupBy, DB::raw("{$this->type}($column) as result")])
+            ->select([$this->groupBy, DB::raw("{$this->type}($column) as \"$resultSelectAlias\"")])
             ->groupBy($this->groupBy)
             ->get()
-            ->mapWithKeys(function (Model $model) {
+            ->mapWithKeys(function (Model $model) use ($resultSelectAlias) {
                 $key = $model[$this->groupBy];
                 $key = $key instanceof BackedEnum ? $key->value : $key;
 
                 return [
-                    $key => $this->transformResult($model['result']),
+                    $key => $this->transformResult($model[$resultSelectAlias]),
                 ];
             })
             ->toArray();
 
-        $options = array_fill_keys($this->options ?? [], 0);
-
+        $options = array_fill_keys($this->getOptions(), 0);
         $data = array_replace($options, $results);
+
+        $cast = $this->query->getModel()->getCasts()[$this->groupBy] ?? null;
+
+        if (
+            $cast &&
+            (new ReflectionEnum($cast))->isBacked() &&
+            method_exists($cast, 'getLabel')
+        ) {
+            $data = Arr::mapWithKeys($data, fn (float $value, mixed $key) => [
+                $cast::from($key)->getLabel() => $value, // @phpstan-ignore-line
+            ]);
+        }
 
         return $data;
     }
